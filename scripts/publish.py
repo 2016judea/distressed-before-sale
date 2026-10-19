@@ -31,7 +31,7 @@ for _o in (ROOT / "site" / "offer.json", ROOT / "site" / "public" / "offer.json"
 
 cfg = """{chipKey:"lead",chipOrder:%(order)s,river:%(river)s,csv:"distressed-before-sale-minneapolis.csv",cols:%(cols)s,
  pulseLabel:"The last 30 days, %(since)s to %(asof)s",
- stats:[["%(new)s","new cases the city opened",""],["%(vbr)s","new vacant-building registrations","hot"],["%(joined)s","houses joined this list",""],["%(sold)s","of these houses sold in 12 months, median %(soldmed)s",""]],
+ stats:[["%(new)s","new cases the city opened",""],["%(vbr)s","new vacant-building registrations","hot"],["%(joined)s","houses joined this list",""],["%(sold)s","houses with 2+ cases sold in 12 months, median %(soldmed)s",""]],
  legend:[["var(--hot)","Has a case still open"],["var(--done)","Every case closed"],["var(--ink)","(ring) one of the %(sn)d open to look at"]],
  dotColor:["var(--done)","var(--hot)"],
  color:r=>r.n_open>0?"var(--hot)":"var(--done)",

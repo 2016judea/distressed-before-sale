@@ -61,13 +61,20 @@ be filled. `outreach/` (gitignored) holds the round-1 ledger and drafts.
 
 ## Distribution
 
-Round 1: 50+ named recipients in three segments (flippers already in the outreach ledger,
-company buyers with a Minneapolis holding on a listed block, and we-buy-houses operators with a
-published email), each with a `/for/<token>/` page that opens on their own record. One A/B
-variable, shared with the six sibling products so results pool: **A** states the price in the
-email, **B** leaves the price to the page. Hypothesis: stating the price in the email lowers
-clicks but raises paid-per-click. Readout at day 3 by variant, product and pooled: `/for/`
-visits, `checkout_open`, `paid`, replies (Vercel events carry `variant`; it never appears in the URL).
+Round 1, drafted 2026-10-19, **nothing sent**: `python3 scripts/build_outreach.py` (bricks venv) reads
+`outreach/round1/seg[0-9]_source.json` and writes the ledger, the drafts and `site/public/f/<token>.json`.
+Three segments: flippers already in the outreach ledger (54; a prior send makes it touch 2), companies
+that bought a Minneapolis house the city had opened cases on (from the county sale record), and
+wholesalers / cash buyers with a published email. Each `/for/<token>/` page opens on the strongest
+listed house within 1 km of one of the recipient's **own** Minneapolis addresses (their record or a
+parcel the county shows them owning, never their own listed house). No such address: `status=hold`.
+That rule holds 40 of 69, so round 1 is a **probe of 29**, under the 50-recipient floor.
+
+One A/B variable, shared with the six sibling products so results pool: **A** states the price in the
+email, **B** leaves the price to the page, alternated within each segment. Hypothesis: stating the
+price in the email lowers clicks but raises paid-per-click. Readout at day 3 by variant, product and
+pooled: `/for/` visits, `checkout_open`, `paid`, replies (Vercel events carry `variant`; it never
+appears in the URL).
 
 Sources, all public: City of Minneapolis CaseViolations and CaseInspections (ArcGIS open data),
 Hennepin County parcels and taxpayer records (MetroGIS), recorded sales. Minneapolis only.
