@@ -75,3 +75,10 @@ Verdict: build. Two fields fall short. Neighborhood is replaced by zip (a cosmet
 still open" cannot be read from the city feed, so the list ranks on recency and count instead of
 open status; the page says "last inspection result", never "open". Neither changes what the
 investor does with the list.
+
+## Reality, revised 2026-10-19 (after building)
+
+- **Neighborhood: filled.** `parcel_snapshot.attrs->>'NEIGHBORHOOD'` carries it for Minneapolis; the "zip instead" note above is superseded.
+- **Open vs closed: filled.** The city's inspection feed (CaseInspections) carries a case status (Enforce, Pending, Stop Work = open), so "still open" is the city's own word, not inferred.
+- **Owner type, tightened.** No homestead is not enough: 238 of 1,078 first-build rows mailed the tax bill to the house itself, so the owner may live there. Those are left out (house number + street match); the list is 839 houses on 2026-10-19.
+- **Still unfilled: the buyer of a sold distressed house** as a named contact. The next snapshot's owner name is there; an email is not, which is why distribution needs a separate email hunt.

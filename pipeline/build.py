@@ -42,6 +42,11 @@ def title(s):
     return re.sub(r"\b(\d+)(St|Nd|Rd|Th)\b", lambda m: m.group(1) + m.group(2).lower(), s)
 
 
+def house_key(line):
+    w = re.sub(r"[^A-Z0-9 ]", " ", (line or "").upper()).split()
+    return (w[0], w[1]) if len(w) >= 2 and w[0].isdigit() else None
+
+
 def block_of(display):
     """'2427 ILION AVE N' -> '24xx Ilion Ave N'; a 3-digit house number -> '4xx'."""
     m = re.match(r"(\d+)\s+(.*)", display or "")
@@ -123,6 +128,11 @@ def main():
             continue
         # owner and where the tax bill goes
         mail = [x for x in (k[6], k[7], k[8]) if x] or ([x for x in (t[3], t[4], t[5]) if x] if t else [])
+        # No homestead filed but the bill goes to the house itself: the owner may live there, so the
+        # house is not "owner lives somewhere else" (238 of 1,078 rows on 2026-10-19). Left out.
+        # Matched on house number + first street word, so "Avenue"/"Ave", a unit or a missing suffix still match.
+        if mail and house_key(mail[0]) and house_key(mail[0]) == house_key(cs[0]["display"]):
+            continue
         last = mail[-1] if mail else ""
         m = re.search(r"\b([A-Z]{2})\s+(\d{5})", last)
         state = m.group(1) if m else ""

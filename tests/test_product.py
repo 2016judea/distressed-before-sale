@@ -182,3 +182,17 @@ def test_only_site_public_is_served_statically():
     assert v["outputDirectory"] == "public"
     assert '"outputDirectory": "public"' in (ROOT / "scripts/deploy.py").read_text()
     assert not any("_full" in str(p) or p.name == "full.json.gz" for p in (ROOT / "site/public").rglob("*"))
+
+
+def test_no_row_mails_the_tax_bill_to_the_house_itself():
+    # the headline says the owner lives somewhere else; a bill mailed to the house says they may not
+    # (238 such rows shipped until 2026-10-19). Matched on house number + first street word.
+    def key(s):
+        w = re.sub(r"[^A-Z0-9 ]", " ", (s or "").upper()).split()
+        return (w[0], w[1]) if len(w) >= 2 and w[0].isdigit() else None
+    bad = [r["addr"] for r in ROWS["rows"] if r.get("mail") and key(r["mail"]) and key(r["mail"]) == key(r["addr"])]
+    assert not bad, bad[:5]
+
+
+def test_paid_lines_render_on_their_own_lines():
+    assert 'map(x=>x.startsWith("<details")?x:`<div>${x}</div>`)' in PAGE
